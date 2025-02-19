@@ -18,10 +18,6 @@ namespace Controls
         [SerializeField] private Rigidbody2D _rb;
         #endregion
         
-        #region Events
-        public event Action<InteractionType> OnInteraction;
-        #endregion
-        
         public void Move(InputAction.CallbackContext context)
         {
             Vector2 move = context.ReadValue<Vector2>();
@@ -37,7 +33,7 @@ namespace Controls
 
         public void Interact(InputAction.CallbackContext context)
         {
-            OnInteraction?.Invoke(_interactionsCollider.InteractionType);
+            //Call sur le premier Interactable de la list
         }
     } 
 }
