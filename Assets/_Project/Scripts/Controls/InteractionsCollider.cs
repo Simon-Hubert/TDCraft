@@ -4,17 +4,38 @@ using UnityEngine;
 
 namespace Controls
 {
+    [RequireComponent(typeof(CircleCollider2D))]
     public class InteractionsCollider : MonoBehaviour
     {
+        #region Fields
+        [SerializeField] CircleCollider2D _cCollider2D;
+        
+
+        #endregion
+        
         List<IInteractable> _interactables;
         
         #region Properties
         public List<IInteractable> Interactables { get => _interactables;}
         #endregion
+        
 
-        public void AddInteractable(IInteractable interactable)
+        void OnTriggerEnter(Collider other)
         {
-            _interactables.Add(interactable);
+            IInteractable interactable = other.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                _interactables.Add(interactable);
+            }
+        }
+
+        void OnTriggerExit(Collider other)
+        {
+            IInteractable interactable = other.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                _interactables.Remove(interactable);
+            }
         }
     }
 }

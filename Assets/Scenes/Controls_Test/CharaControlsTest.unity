@@ -395,11 +395,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9130770085546120994, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
+      propertyPath: _cCollider2D
+      value: 
+      objectReference: {fileID: 4357414915062994389}
+    m_RemovedComponents:
+    - {fileID: 4631597506026315144, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
+--- !u!58 &4357414915062994389 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 5384830738838030281, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
+  m_PrefabInstance: {fileID: 4357414915062994388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
