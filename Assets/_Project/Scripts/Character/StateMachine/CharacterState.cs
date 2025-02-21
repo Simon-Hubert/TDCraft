@@ -3,18 +3,21 @@ using UnityEngine.TextCore.Text;
 
 public class CharacterState : MonoBehaviour
 {
-    protected CharacterStateMachine _stateMachine;
-    protected Character _character;
+    protected CharacterStateMachine StateMachine;
+    protected Character Character;
 
 
     public virtual void Initialize(Character character, CharacterStateMachine stateMachine)
     {
-       _character = character;
-       _stateMachine = stateMachine;
+       Character = character;
+       StateMachine = stateMachine;
     }
+
+    public virtual StateID GetStateID() => StateID.None; 
     public virtual void StateEnter() {}
     public virtual void StateExit() {}
     public virtual void StateUpdate(float deltaTime) {}
     public virtual void StateFixedUpdate(float fixedDeltaTime) {}
+    public virtual void BindInputs() {}
     
 }

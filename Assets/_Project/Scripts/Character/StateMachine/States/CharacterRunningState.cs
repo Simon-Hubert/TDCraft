@@ -1,24 +1,22 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CharacterIdleState : CharacterState
+public class CharacterRunningState : CharacterState
 {
-
-    public UnityEvent OnEnterIdle;
-    public UnityEvent OnExitIdle;
-
-    public override StateID GetStateID() => StateID.Idle;
-
+    public UnityEvent OnEnterRunning;
+    public UnityEvent OnExitRunning;
+    
+    public override StateID GetStateID() => StateID.Run;
     public override void StateEnter()
     {
         base.StateEnter();
-        OnEnterIdle?.Invoke();
+        OnEnterRunning?.Invoke();
     }
 
     public override void StateExit()
     {
         base.StateExit();
-        OnExitIdle?.Invoke();
+        OnExitRunning?.Invoke();
     }
 
     public override void StateUpdate(float deltaTime)
@@ -29,22 +27,17 @@ public class CharacterIdleState : CharacterState
     public override void StateFixedUpdate(float fixedDeltaTime)
     {
         base.StateFixedUpdate(fixedDeltaTime);
+        if(Character.Rb.linearVelocity.magnitude < 0.1f) StateMachine.ChangeState(StateID.Idle);
     }
 
     public override void BindInputs()
     {
         base.BindInputs();
-        Character.PC.OnInteract += ReceiveInteract;
         Character.PC.OnMove += ReceiveMove;
     }
 
-    void ReceiveInteract()
+    void ReceiveMove(Vector2 direction)
     {
-        StateMachine.ChangeState(StateID.Interact);
-    }
-
-    void ReceiveMove(Vector2 moves)
-    {
-        StateMachine.ChangeState(StateID.Run);
+        //MOVE PLAYER
     }
 }
