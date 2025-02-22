@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
     public InteractionsCollider ICollider;
     public Rigidbody2D Rb;
     #endregion
+    
     #region StateMachine
     [Header("StateMachine")]
     [SerializeField] CharacterIdleState _idleState;
@@ -19,8 +20,10 @@ public class Character : MonoBehaviour
 
     private CharacterStateMachine _stateMachine;
     #endregion
-
+    
+    #region Variables
     private bool _isMoving = false;
+    #endregion
 
     private void Awake()
     {

@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &599245672 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9130770085546120994, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
+  m_PrefabInstance: {fileID: 4357414915062994388}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65bd9a774967d86459e34234ef097541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &787190473
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,6 +424,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5377914514308302359, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4357414915062994393}
+    - targetCorrespondingSourceObject: {fileID: 5377914514308302359, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4357414915062994396}
   m_SourcePrefab: {fileID: 100100000, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
 --- !u!58 &4357414915062994389 stripped
 CircleCollider2D:
@@ -470,6 +484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5c1a59c76a18354bbadd732808e70a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 10
   OnEnterRunning:
     m_PersistentCalls:
       m_Calls: []
@@ -489,9 +504,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PC: {fileID: 4357414915062994392}
+  ICollider: {fileID: 599245672}
   Rb: {fileID: 4357414915062994391}
   _idleState: {fileID: 4357414915062994393}
   _runningState: {fileID: 4357414915062994394}
+  _interactState: {fileID: 4357414915062994396}
+--- !u!114 &4357414915062994396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4357414915062994390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b91b6aee8ac5774abaab97939eb9c63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnEnterInteract:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitInteract:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

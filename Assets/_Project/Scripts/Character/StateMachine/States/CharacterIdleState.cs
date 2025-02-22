@@ -3,10 +3,13 @@ using UnityEngine.Events;
 
 public class CharacterIdleState : CharacterState
 {
-
+    #region UnityEvents
     public UnityEvent OnEnterIdle;
     public UnityEvent OnExitIdle;
+    #endregion
 
+    
+    #region StateMachine Methods
     public override StateID GetStateID() => StateID.Idle;
 
     public override void StateEnter()
@@ -34,7 +37,9 @@ public class CharacterIdleState : CharacterState
     {
         base.StateFixedUpdate(fixedDeltaTime);
     }
+    #endregion
 
+    #region Inputs Methods
     public override void BindInputs()
     {
         base.BindInputs();
@@ -58,4 +63,5 @@ public class CharacterIdleState : CharacterState
     {
         StateMachine.ChangeState(StateID.Run);
     }
+    #endregion
 }

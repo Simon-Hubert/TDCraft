@@ -3,14 +3,22 @@ using UnityEngine.Events;
 
 public class CharacterRunningState : CharacterState
 {
+    #region Fields
     [SerializeField] private float _speed;
+    #endregion
+    
+    #region Unity Events
     public UnityEvent OnEnterRunning;
     public UnityEvent OnExitRunning;
+    #endregion
     
+    #region Variables
     bool isRunning = false;
     private Vector2 dir;
-    
-    
+    #endregion
+
+
+    #region StateMachine Methods
     public override StateID GetStateID() => StateID.Run;
     public override void StateEnter()
     {
@@ -44,7 +52,9 @@ public class CharacterRunningState : CharacterState
         }
 
     }
+    #endregion
 
+    #region Inputs Methods
     public override void BindInputs()
     {
         base.BindInputs();
@@ -70,4 +80,5 @@ public class CharacterRunningState : CharacterState
             dir = Vector2.zero;
         }
     }
+    #endregion
 }

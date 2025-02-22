@@ -13,13 +13,14 @@ namespace Controls
 
         #endregion
         
+        #region Variables
         List<IInteractable> _interactables = new List<IInteractable>();
+        #endregion
         
         #region Properties
         public List<IInteractable> Interactables { get => _interactables;}
         #endregion
         
-
         void OnTriggerEnter(Collider other)
         {
             IInteractable interactable = other.GetComponent<IInteractable>();

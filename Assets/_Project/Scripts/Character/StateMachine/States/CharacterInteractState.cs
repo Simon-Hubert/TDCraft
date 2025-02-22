@@ -4,9 +4,13 @@ using UnityEngine.Events;
 
 public class CharacterInteractState : CharacterState
 {
+    #region UnityEvent
     public UnityEvent OnEnterInteract;
     public UnityEvent OnExitInteract;
+    #endregion
     
+    
+    #region StateMachine Methods
     public override StateID GetStateID() => StateID.Interact;
     public override void StateEnter()
     {
@@ -33,7 +37,9 @@ public class CharacterInteractState : CharacterState
     {
         base.StateFixedUpdate(fixedDeltaTime);
     }
-
+    #endregion
+    
+    #region Inputs Methods
     public override void BindInputs()
     {
         base.BindInputs();
@@ -60,4 +66,7 @@ public class CharacterInteractState : CharacterState
     {
         StateMachine.ChangeState(StateID.Run);
     }
+    #endregion
+
+
 }
