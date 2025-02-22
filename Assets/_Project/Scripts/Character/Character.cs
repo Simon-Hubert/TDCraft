@@ -8,12 +8,14 @@ public class Character : MonoBehaviour
     [Header("Components")]
     public PlayerController PC;
 
+    public InteractionsCollider ICollider;
     public Rigidbody2D Rb;
     #endregion
     #region StateMachine
     [Header("StateMachine")]
     [SerializeField] CharacterIdleState _idleState;
     [SerializeField] CharacterRunningState _runningState;
+    [SerializeField] CharacterInteractState _interactState;
 
     private CharacterStateMachine _stateMachine;
     #endregion
@@ -26,6 +28,7 @@ public class Character : MonoBehaviour
 
         _idleState.Initialize(this, _stateMachine);
         _runningState.Initialize(this, _stateMachine);
+        _interactState.Initialize(this, _stateMachine);
     }
 
     private void Start()

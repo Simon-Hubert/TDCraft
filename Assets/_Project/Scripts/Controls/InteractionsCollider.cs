@@ -13,7 +13,7 @@ namespace Controls
 
         #endregion
         
-        List<IInteractable> _interactables;
+        List<IInteractable> _interactables = new List<IInteractable>();
         
         #region Properties
         public List<IInteractable> Interactables { get => _interactables;}

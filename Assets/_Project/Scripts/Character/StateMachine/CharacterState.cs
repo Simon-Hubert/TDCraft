@@ -19,5 +19,6 @@ public class CharacterState : MonoBehaviour
     public virtual void StateUpdate(float deltaTime) {}
     public virtual void StateFixedUpdate(float fixedDeltaTime) {}
     public virtual void BindInputs() {}
+    public virtual void UnBindInputs() {}
     
 }

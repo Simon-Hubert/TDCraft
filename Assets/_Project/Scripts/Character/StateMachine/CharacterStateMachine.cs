@@ -10,7 +10,7 @@ public enum StateID
 public class CharacterStateMachine
 {
     public CharacterState CurrentState;
-    public CharacterState[] States;
+    public CharacterState[] States = new CharacterState[3];
 
     public void Initialize(CharacterState initialState, CharacterState[] states)
     {
@@ -28,9 +28,9 @@ public class CharacterStateMachine
 
     public CharacterState GetState(StateID newStateID)
     {
-        for (int i = 0; i < States.Length - 1; i++)
+        for (int i = 0; i < States.Length; i++)
         {
-            if(States[i].GetStateID() == newStateID) return States[i];
+            if (States[i].GetStateID() == newStateID) return States[i];
         }
 
         return null;

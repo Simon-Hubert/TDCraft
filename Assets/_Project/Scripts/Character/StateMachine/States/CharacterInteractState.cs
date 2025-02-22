@@ -1,28 +1,27 @@
+using System.Data;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CharacterIdleState : CharacterState
+public class CharacterInteractState : CharacterState
 {
-
-    public UnityEvent OnEnterIdle;
-    public UnityEvent OnExitIdle;
-
-    public override StateID GetStateID() => StateID.Idle;
-
+    public UnityEvent OnEnterInteract;
+    public UnityEvent OnExitInteract;
+    
+    public override StateID GetStateID() => StateID.Interact;
     public override void StateEnter()
     {
         base.StateEnter();
-        OnEnterIdle?.Invoke();
+        OnEnterInteract?.Invoke();
         BindInputs();
-        Debug.Log("Entering Idle State");
+        Debug.Log("Entering Interact State");
     }
 
     public override void StateExit()
     {
         base.StateExit();
-        OnExitIdle?.Invoke();
+        OnExitInteract?.Invoke();
         UnBindInputs();
-        Debug.Log("Exit Idle State");
+        Debug.Log("Exiting Interact State");
     }
 
     public override void StateUpdate(float deltaTime)
@@ -51,7 +50,10 @@ public class CharacterIdleState : CharacterState
 
     void ReceiveInteract()
     {
-        StateMachine.ChangeState(StateID.Interact);
+        if (Character.ICollider.Interactables.Count > 0)
+        {
+            Character.ICollider.Interactables[0].Interact();
+        }
     }
 
     void ReceiveMove(Vector2 moves)
