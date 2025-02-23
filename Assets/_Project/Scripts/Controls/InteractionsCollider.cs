@@ -21,21 +21,25 @@ namespace Controls
         public List<IInteractable> Interactables { get => _interactables;}
         #endregion
         
-        void OnTriggerEnter(Collider other)
+        void OnTriggerEnter2D(Collider2D other)
         {
+            Debug.LogWarning("FIND" + other.name);
             IInteractable interactable = other.GetComponent<IInteractable>();
             if (interactable != null)
             {
                 _interactables.Add(interactable);
+                Debug.LogWarning("Add");
             }
         }
 
-        void OnTriggerExit(Collider other)
+        void OnTriggerExit2D(Collider2D other)
         {
+            Debug.LogWarning("LOST" + other.name);
             IInteractable interactable = other.GetComponent<IInteractable>();
             if (interactable != null)
             {
                 _interactables.Remove(interactable);
+                Debug.LogWarning("Remove");
             }
         }
     }

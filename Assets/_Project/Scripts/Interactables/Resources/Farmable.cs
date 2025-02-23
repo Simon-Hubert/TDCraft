@@ -1,27 +1,39 @@
+using System;
 using Controls;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Farmable : IInteractable
+[RequireComponent(typeof(BoxCollider2D))]
+public class Farmable : MonoBehaviour
 {
     #region Fields
-    [SerializeField] private float _life;
-    [SerializeField] private Resource _droppedResource;
+    [SerializeField] protected SO_FarmableType _farmableType;
+    #endregion
+    #region Variables
+
+    protected float _currentLife;
     #endregion
     
     #region UnityEvents
     public UnityEvent OnDamaged;
     public UnityEvent OnDropResource;
     #endregion
-    public void Interact()
+
+    private void Awake()
     {
-        OnDamaged?.Invoke();
-        _life--;
-        if(_life <= 0) DropResource();
+        _currentLife = _farmableType.LifeMAX;
+        GetComponentInChildren<SpriteRenderer>().sprite = _farmableType.Sprite;
     }
 
     public virtual void DropResource()
     {
+        Instantiate(_farmableType.DroppedResource, transform.position, Quaternion.identity);
         OnDropResource?.Invoke();
+        DestroyFarmable();
+    }
+
+    public virtual void DestroyFarmable()
+    {
+        Destroy(gameObject);
     }
 }

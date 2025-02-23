@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class Resource
+[RequireComponent(typeof(CircleCollider2D))]
+public class Resource : MonoBehaviour
 {
     
 }
