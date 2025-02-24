@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FarmableType", menuName = "Scriptable Objects/FarmableType")]
