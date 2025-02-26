@@ -5,6 +5,8 @@ namespace Controls
     public class ControllerModule : Module
     {
         [SerializeField] private float _speed;
+
+        #region Module Methods
         public override void BindInput()
         {
             Debug.Log("ControllerModule BindInput");
@@ -30,6 +32,8 @@ namespace Controls
             CharacterOwner = null;
             CharacterPilotingState = null;
         }
+        #endregion
+
     } 
 }
 
