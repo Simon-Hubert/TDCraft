@@ -30,12 +30,12 @@ namespace Controls
         private void Awake()
         {
             _currentLife = _farmableType.LifeMAX;
-            GetComponentInChildren<SpriteRenderer>().sprite = _farmableType.Sprite;
+            GetComponentInChildren<SpriteRenderer>().sprite = _farmableType.Sprites[0];
         }
 
         public virtual void DropResource()
         {
-            Instantiate(_farmableType.DroppedResource, transform.position, Quaternion.identity);
+            //Instantiate(_farmableType.DroppedResource, transform.position, Quaternion.identity);
             OnDropResource?.Invoke();
             DestroyFarmable();
         }
