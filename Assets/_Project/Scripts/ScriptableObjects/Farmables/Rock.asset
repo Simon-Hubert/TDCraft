@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _farmableID: Rock
   _farmableRarity: SR
-  _sprites: []
+  Sprites: []
   _lifeMAX: 10
-  _droppedResourceIDs:
-  - Stone
-  - Gold
+  DroppedResources:
+  - {fileID: 11400000, guid: ec2c179d3fe4cb94e93cc29636cb47b2, type: 2}
+  - {fileID: 11400000, guid: d65b62f3e360dc245a8b1234efe2ba14, type: 2}

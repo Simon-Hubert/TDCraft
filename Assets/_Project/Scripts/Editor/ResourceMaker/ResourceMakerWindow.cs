@@ -8,6 +8,7 @@ public class ResourceMakerWindow : EditorWindow
 {
     private string _csvPathFile = "";
     private string _searchQuery = "";
+    private string _resourcesPath = "Assets/_Project/Scripts/ScriptableObjects/Resources/";
     
     List<SO_ResourceType> _resourceTypes = new List<SO_ResourceType>();
     List<SO_FarmableType> _farmableTypes = new List<SO_FarmableType>();
@@ -75,6 +76,8 @@ public class ResourceMakerWindow : EditorWindow
         
         if (_resourceTypes.Count > 0)
         {
+            GUILayout.Label("Resources :", EditorStyles.boldLabel);
+            GUILayout.Space(20);
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
                 foreach (SO_ResourceType resourceType in _resourceTypes)
@@ -86,6 +89,8 @@ public class ResourceMakerWindow : EditorWindow
 
         if (_farmableTypes.Count > 0)
         {
+            GUILayout.Label("Farmables :", EditorStyles.boldLabel);
+            GUILayout.Space(20);
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
                 foreach (SO_FarmableType farmableType in _farmableTypes)
@@ -184,9 +189,10 @@ public class ResourceMakerWindow : EditorWindow
         using (new GUILayout.VerticalScope(EditorStyles.helpBox))
         {
             GUILayout.Label(farmableType.name, EditorStyles.boldLabel);
-            farmableType.FarmableID = EditorGUILayout.TextField(farmableType.FarmableID);
-            farmableType.FarmableRarity = EditorGUILayout.TextField(farmableType.FarmableRarity);
-            farmableType.LifeMAX = EditorGUILayout.FloatField(farmableType.LifeMAX);
+            GUILayout.Space(10);
+            farmableType.FarmableID = EditorGUILayout.TextField("ID",farmableType.FarmableID);
+            farmableType.FarmableRarity = EditorGUILayout.TextField("Rarity" ,farmableType.FarmableRarity);
+            farmableType.LifeMAX = EditorGUILayout.FloatField("LifeMAX" ,farmableType.LifeMAX);
         }
     }
 
@@ -195,9 +201,10 @@ public class ResourceMakerWindow : EditorWindow
         using (new GUILayout.VerticalScope(EditorStyles.helpBox))
         {
             GUILayout.Label(resourceType.name, EditorStyles.boldLabel);
-            resourceType.ResourceID = EditorGUILayout.TextField(resourceType.ResourceID);
-            resourceType.ResourceRarity = EditorGUILayout.TextField(resourceType.ResourceRarity);
-            resourceType.Value = EditorGUILayout.FloatField(resourceType.Value);
+            GUILayout.Space(10);
+            resourceType.ResourceID = EditorGUILayout.TextField("ID" ,resourceType.ResourceID);
+            resourceType.ResourceRarity = EditorGUILayout.TextField( "Rarity" ,resourceType.ResourceRarity);
+            resourceType.Value = EditorGUILayout.FloatField( "Value" ,resourceType.Value);
         }
     }
 
@@ -276,7 +283,8 @@ public class ResourceMakerWindow : EditorWindow
                 if (!resourceDroppedIDs.Contains(resourceDroppedID)) resourceDroppedIDs.Add(resourceDroppedID);
             }
 
-            GenerateFarmableData(farmableID, farmableRarity, lifeMAX, resourceDroppedIDs);
+            List<SO_ResourceType> droppedResources = GetResourcesTypes(resourceDroppedIDs);
+            GenerateFarmableData(farmableID, farmableRarity, lifeMAX, droppedResources);
         }
     }
 
@@ -301,7 +309,7 @@ public class ResourceMakerWindow : EditorWindow
         Debug.Log("Resource Data generated!");
     }
 
-    void GenerateFarmableData(string farmableID, string farmableRarity, float lifeMAX, List<string> resourceDroppedIDs)
+    void GenerateFarmableData(string farmableID, string farmableRarity, float lifeMAX, List<SO_ResourceType> resourcesDropped)
     {
         if (string.IsNullOrEmpty(farmableID))
         {
@@ -310,7 +318,7 @@ public class ResourceMakerWindow : EditorWindow
         }
 
         SO_FarmableType newFarmable = CreateInstance<SO_FarmableType>();
-        newFarmable = new SO_FarmableType(farmableID, farmableRarity, lifeMAX, resourceDroppedIDs);
+        newFarmable = new SO_FarmableType(farmableID, farmableRarity, lifeMAX, resourcesDropped);
 
         AssetDatabase.CreateAsset(newFarmable,
             "Assets/_Project/Scripts/ScriptableObjects/Farmables/" + farmableID + ".asset");
@@ -322,6 +330,16 @@ public class ResourceMakerWindow : EditorWindow
         Debug.Log("Resource Data generated!");
     }
 
+    List<SO_ResourceType> GetResourcesTypes(List<string> resourceDroppedIDs)
+    {
+        List<SO_ResourceType> resourcesOut = new List<SO_ResourceType>();
+        foreach (string droppedID in resourceDroppedIDs)
+        {
+            SO_ResourceType newResource = (SO_ResourceType)AssetDatabase.LoadAssetAtPath<SO_ResourceType>(_resourcesPath + droppedID + ".asset");
+            resourcesOut.Add(newResource);
+        }
+        return resourcesOut;
+    }
     #endregion
 }
    

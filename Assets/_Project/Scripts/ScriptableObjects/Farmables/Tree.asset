@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _farmableID: Tree
   _farmableRarity: R
-  _sprites: []
+  Sprites: []
   _lifeMAX: 10
-  _droppedResourceIDs:
-  - Wood
+  DroppedResources:
+  - {fileID: 11400000, guid: 36d2d7db33c195f4c88747eb5c6f7d57, type: 2}
