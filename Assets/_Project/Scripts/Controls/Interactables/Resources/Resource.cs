@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Controls;
 using UnityEngine;
 
 [System.Serializable]
@@ -6,10 +7,11 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D))]
 public class Resource : MonoBehaviour
 {
-    private int _amount;
+    [SerializeField] int _amount;
+    [SerializeField] SO_ResourceType _type;
     public int Amount { get => _amount; }
     
-    public virtual List<string> GetResourceID() => new List<string>();
+    public string GetResourceID() => _type.ResourceID;
     
     public void AddAmount(int amount) => _amount += amount;
     public void RemoveAmount(int amount) => _amount -= amount;

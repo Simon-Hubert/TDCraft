@@ -5,6 +5,7 @@ public class Turtle : MonoBehaviour
 {
     public  Life _life;
     public  Rigidbody2D Rb;
+    public Inventory Inventory;
 
     public Vector3 Movements;
     void Start()

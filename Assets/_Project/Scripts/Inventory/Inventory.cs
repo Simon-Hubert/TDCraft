@@ -63,4 +63,25 @@ public class Inventory : MonoBehaviour
             _resources[index] = null;
         }
     }
+
+    public bool IsInInventory(List<Needings> needings)
+    {
+        bool result = true;
+        foreach (Needings needing in needings)
+        {
+            if (!result) return false;
+            foreach (Resource resource in _resources)
+            {
+                if (resource.GetResourceID() == needing.nResourceID &&
+                    resource.Amount >= needing.nAmount)
+                {
+                    result = true;
+                    break;
+                }
+                result = false;
+
+            }
+        }
+        return true;
+    }
 }

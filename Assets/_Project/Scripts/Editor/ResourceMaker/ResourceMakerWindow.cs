@@ -12,19 +12,21 @@ public class ResourceMakerWindow : EditorWindow
     
     List<SO_ResourceType> _resourceTypes = new List<SO_ResourceType>();
     List<SO_FarmableType> _farmableTypes = new List<SO_FarmableType>();
+    List<SO_ModuleData> _moduleData = new List<SO_ModuleData>();
 
     private enum View
     {
         ResourceGenerator,
         FarmableGenerator,
+        ModuleGenerator,
         DataEditor
     }
 
     private View _currentView = View.ResourceGenerator;
 
 
-    [MenuItem("Tools/ResourceManager")]
-    public static void ShowWindow() => GetWindow<ResourceMakerWindow>("ResourceManager");
+    [MenuItem("Tools/CraftManager")]
+    public static void ShowWindow() => GetWindow<ResourceMakerWindow>("CraftManager");
 
     void OnGUI()
     {
@@ -45,6 +47,11 @@ public class ResourceMakerWindow : EditorWindow
             _currentView = View.FarmableGenerator;
         }
 
+        if (GUILayout.Toggle(_currentView == View.ModuleGenerator, "Module Generator", EditorStyles.toolbarButton))
+        {
+            _currentView = View.ModuleGenerator;
+        }
+
         GUILayout.EndHorizontal();
 
         switch (_currentView)
@@ -55,13 +62,16 @@ public class ResourceMakerWindow : EditorWindow
             case View.FarmableGenerator:
                 ShowFarmableGenerator();
                 break;
+            case View.ModuleGenerator:
+                ShowModuleGenerator();
+                break;
             case View.DataEditor:
                 ShowDataEditor();
                 break;
         }
 
     }
-    
+
     #region Switching View Methods
     void ShowDataEditor()
     {
@@ -125,7 +135,7 @@ public class ResourceMakerWindow : EditorWindow
                 return;
             }
 
-            LoadDataFromCSV(_csvPathFile, true);
+            LoadDataFromCSV(_csvPathFile, true, false);
         }
     }
 
@@ -149,7 +159,30 @@ public class ResourceMakerWindow : EditorWindow
                 return;
             }
 
-            LoadDataFromCSV(_csvPathFile, false);
+            LoadDataFromCSV(_csvPathFile, false, false);
+        }
+    }
+    private void ShowModuleGenerator()
+    {
+        GUILayout.Label("Select CSV File", EditorStyles.boldLabel);  
+        
+        if (GUILayout.Button("Select CSV File"))
+        {
+            string path = EditorUtility.OpenFilePanel("Select CSV File", "", "csv");
+            if (!string.IsNullOrEmpty(path)) _csvPathFile = path;
+        }
+
+        if (!string.IsNullOrEmpty(_csvPathFile)) GUILayout.Label("Selected CSV : " + _csvPathFile);
+
+        if (GUILayout.Button("Generate Modules"))
+        {
+            if (string.IsNullOrEmpty(_csvPathFile))
+            {
+                Debug.LogError("Please select a CSV File");
+                return;
+            }
+
+            LoadDataFromCSV(_csvPathFile, false, true);
         }
     }
     #endregion
@@ -212,7 +245,7 @@ public class ResourceMakerWindow : EditorWindow
 
     #region CSV Methods
 
-    void LoadDataFromCSV(string csvPath, bool isResources)
+    void LoadDataFromCSV(string csvPath, bool isResources, bool isModules)
     {
         if (!File.Exists(csvPath))
         {
@@ -223,6 +256,10 @@ public class ResourceMakerWindow : EditorWindow
         string[] csvLines = File.ReadAllLines(csvPath);
 
         if (isResources) LoadResources(csvLines);
+        else if (isModules)
+        {
+            LoadModules(csvLines);
+        }
         else
         {
             LoadFarmables(csvLines);
@@ -287,7 +324,39 @@ public class ResourceMakerWindow : EditorWindow
             GenerateFarmableData(farmableID, farmableRarity, lifeMAX, droppedResources);
         }
     }
+    
+    void LoadModules(string[] csvLines)
+    {
+        foreach (string line in csvLines)
+        {
+            string[] columns = line.Split(',');
 
+            if (columns.Length < 4)
+            {
+                Debug.LogWarning("Skipping invalid line at " + line);
+                continue;
+            }
+
+            string farmableID = columns[0];
+            string farmableRarity = columns[1];
+            float lifeMAX;
+
+            if (!float.TryParse(columns[2], out lifeMAX))
+            {
+                Debug.LogWarning("Invalid value for lifeMAX in line: " + line);
+                continue; // Saute cette ligne si la conversion échoue
+            }
+
+            List<string> resourceDroppedIDs = new List<string>();
+            foreach (string resourceDroppedID in columns[3].Split('_'))
+            {
+                if (!resourceDroppedIDs.Contains(resourceDroppedID)) resourceDroppedIDs.Add(resourceDroppedID);
+            }
+
+            List<SO_ResourceType> droppedResources = GetResourcesTypes(resourceDroppedIDs);
+            GenerateFarmableData(farmableID, farmableRarity, lifeMAX, droppedResources);
+        }
+    }
     private void GenerateResourceData(string resourceID, string resourceRarity, float resourceValue)
     {
         if (string.IsNullOrEmpty(resourceID))
