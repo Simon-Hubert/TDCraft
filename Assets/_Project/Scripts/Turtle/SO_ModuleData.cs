@@ -8,6 +8,12 @@ public struct Needings
 {
     public string nResourceID;
     public int nAmount;
+
+    public Needings(string nResourceID, int nAmount)
+    {
+        this.nResourceID = nResourceID;
+        this.nAmount = nAmount;
+    }
 }
 
 [CreateAssetMenu(fileName = "ModuleData", menuName = "Scriptable Objects/ModuleData")]
@@ -24,4 +30,10 @@ public class SO_ModuleData : ScriptableObject
     public string ModuleID { get => _moduleID;}
     public Sprite SpriteBuildable { get => _spriteBuildable;}
     public bool Craftable = false;
+
+    public SO_ModuleData(string moduleID, List<Needings> needings)
+    {
+        _moduleID = moduleID;
+        _needings = needings;
+    }
 }

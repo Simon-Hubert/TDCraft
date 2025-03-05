@@ -109,6 +109,19 @@ public class ResourceMakerWindow : EditorWindow
                 }
             }
         }
+
+        if (_moduleData.Count > 0)
+        {
+            GUILayout.Label("Modules :", EditorStyles.boldLabel);
+            GUILayout.Space(20);
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                foreach (SO_ModuleData moduleData in _moduleData)
+                {
+                    LoadModules(moduleData);
+                }
+            }
+        }
         else
         {
             GUILayout.Label("No Assets Found");
@@ -241,6 +254,28 @@ public class ResourceMakerWindow : EditorWindow
         }
     }
 
+    void LoadModules(SO_ModuleData moduleData)
+    {
+        using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+        {
+            GUILayout.Label(moduleData.name, EditorStyles.boldLabel);
+            GUILayout.Space(10);
+            GUILayout.Label("ModuleID:  " + moduleData.ModuleID);
+            GUILayout.Space(10);
+            GUILayout.Label("Needings", EditorStyles.boldLabel);
+            foreach (Needings needing in moduleData.Needings)
+            {
+                using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Resource needed:  " + needing.nResourceID);
+                    GUILayout.Label("Amount :  " + needing.nAmount);
+                    GUILayout.EndHorizontal();
+                }
+            }
+        }
+    }
+
     #endregion
 
     #region CSV Methods
@@ -327,34 +362,27 @@ public class ResourceMakerWindow : EditorWindow
     
     void LoadModules(string[] csvLines)
     {
+        int i = -1;
         foreach (string line in csvLines)
         {
+            i++;
+            if(i == 0) continue;
             string[] columns = line.Split(',');
 
-            if (columns.Length < 4)
+            if (columns.Length < 2)
             {
                 Debug.LogWarning("Skipping invalid line at " + line);
                 continue;
             }
 
-            string farmableID = columns[0];
-            string farmableRarity = columns[1];
-            float lifeMAX;
-
-            if (!float.TryParse(columns[2], out lifeMAX))
+            string moduleID = columns[0];
+            
+            List<string> needings = new List<string>();
+            foreach (string needing in columns[1].Split('_'))
             {
-                Debug.LogWarning("Invalid value for lifeMAX in line: " + line);
-                continue; // Saute cette ligne si la conversion échoue
+                needings.Add(needing);
             }
-
-            List<string> resourceDroppedIDs = new List<string>();
-            foreach (string resourceDroppedID in columns[3].Split('_'))
-            {
-                if (!resourceDroppedIDs.Contains(resourceDroppedID)) resourceDroppedIDs.Add(resourceDroppedID);
-            }
-
-            List<SO_ResourceType> droppedResources = GetResourcesTypes(resourceDroppedIDs);
-            GenerateFarmableData(farmableID, farmableRarity, lifeMAX, droppedResources);
+            GenerateModuleData(moduleID, needings);
         }
     }
     private void GenerateResourceData(string resourceID, string resourceRarity, float resourceValue)
@@ -399,15 +427,67 @@ public class ResourceMakerWindow : EditorWindow
         Debug.Log("Resource Data generated!");
     }
 
+    void GenerateModuleData(string moduleID, List<string> needingsID)
+    {
+        if (string.IsNullOrEmpty(moduleID))
+        {
+            Debug.LogError("Module ID must be provided");
+            return;
+        }
+        
+        SO_ModuleData newModule = CreateInstance<SO_ModuleData>();
+        List<Needings> needingsList = GetNeedings(needingsID);
+        newModule = new SO_ModuleData(moduleID, needingsList);
+        
+        AssetDatabase.CreateAsset(newModule,
+            "Assets/_Project/Scripts/ScriptableObjects/Modules/" + moduleID + ".asset");
+        EditorUtility.SetDirty(newModule);
+
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        Debug.Log("Resource Data generated!");
+    }
     List<SO_ResourceType> GetResourcesTypes(List<string> resourceDroppedIDs)
     {
         List<SO_ResourceType> resourcesOut = new List<SO_ResourceType>();
         foreach (string droppedID in resourceDroppedIDs)
         {
-            SO_ResourceType newResource = (SO_ResourceType)AssetDatabase.LoadAssetAtPath<SO_ResourceType>(_resourcesPath + droppedID + ".asset");
-            resourcesOut.Add(newResource);
+            resourcesOut.Add(GetResourceType(droppedID));
         }
         return resourcesOut;
+    }
+
+    SO_ResourceType GetResourceType(string resourceID) => (SO_ResourceType)AssetDatabase.LoadAssetAtPath<SO_ResourceType>(_resourcesPath + resourceID + ".asset");
+
+    List<Needings> GetNeedings(List<string> needingsID)
+    {
+        List<Needings> needingsList = new List<Needings>();
+        foreach (string needingID in needingsID)
+        {
+            string amountID = "";
+            amountID += needingID[0];
+            
+            if (string.IsNullOrEmpty(amountID))
+            {
+                Debug.LogError("Needings ID must be provided like this : nAmoutMyResourceNeeded");
+                return null;
+            }
+            Debug.Log(needingID + " : " + amountID);
+            Debug.Log(amountID);
+            int amount = int.Parse(amountID);
+            
+            string resourceID = "";
+            for (int i = 1; i < needingID.Length; i++)
+            {
+                resourceID += needingID[i];
+            }
+
+            Needings needing = new Needings(resourceID, amount);
+            needingsList.Add(needing);
+        }
+
+        return needingsList;
     }
     #endregion
 }

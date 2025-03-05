@@ -433,9 +433,21 @@ PrefabInstance:
       propertyPath: Rb
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3374535643823273102, guid: 73cfb294aab1a9147aace84648c50403, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3980766772058889694, guid: 73cfb294aab1a9147aace84648c50403, type: 3}
       propertyPath: _lifeMAX
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4338633908070137152, guid: 73cfb294aab1a9147aace84648c50403, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4338633908070137152, guid: 73cfb294aab1a9147aace84648c50403, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6149508911946624540, guid: 73cfb294aab1a9147aace84648c50403, type: 3}
       propertyPath: m_Name
@@ -547,6 +559,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5377914514308302359, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377914514308302359, guid: cadec56b62336bc40a111567de5cb3cd, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
