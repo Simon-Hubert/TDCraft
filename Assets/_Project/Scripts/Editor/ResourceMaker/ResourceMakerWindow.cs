@@ -9,6 +9,7 @@ public class ResourceMakerWindow : EditorWindow
     private string _csvPathFile = "";
     private string _searchQuery = "";
     private string _resourcesPath = "Assets/_Project/Scripts/ScriptableObjects/Resources/";
+    Vector2 scrollPosH = Vector2.zero;
     
     List<SO_ResourceType> _resourceTypes = new List<SO_ResourceType>();
     List<SO_FarmableType> _farmableTypes = new List<SO_FarmableType>();
@@ -30,7 +31,7 @@ public class ResourceMakerWindow : EditorWindow
 
     void OnGUI()
     {
-
+        scrollPosH = EditorGUILayout.BeginScrollView(scrollPosH);
         GUILayout.BeginHorizontal(EditorStyles.toolbar);
         if (GUILayout.Toggle(_currentView == View.DataEditor, "Data Editor", EditorStyles.toolbarButton))
         {
@@ -69,7 +70,7 @@ public class ResourceMakerWindow : EditorWindow
                 ShowDataEditor();
                 break;
         }
-
+        EditorGUILayout.EndScrollView();
     }
 
     #region Switching View Methods
@@ -206,6 +207,7 @@ public class ResourceMakerWindow : EditorWindow
     {
         _farmableTypes.Clear();
         _resourceTypes.Clear();
+        _moduleData.Clear();
         
         string basePath = "Assets/_Project/Scripts/ScriptableObjects";
         string[] guids = AssetDatabase.FindAssets(_searchQuery, new string[] { basePath });
@@ -225,6 +227,10 @@ public class ResourceMakerWindow : EditorWindow
                 else if (asset is SO_ResourceType)
                 {
                     _resourceTypes.Add((SO_ResourceType)asset);
+                }
+                else if (asset is SO_ModuleData)
+                {
+                    _moduleData.Add((SO_ModuleData)asset);
                 }
             }
         }
