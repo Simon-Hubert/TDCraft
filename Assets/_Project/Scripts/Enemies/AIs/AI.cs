@@ -8,8 +8,11 @@ namespace Enemies
     public abstract class AI : MonoBehaviour
     {
         private Sense[] _senses;
-        protected readonly List<Vector2> targets = new List<Vector2>();
-        protected EnemyController controller;
+        protected readonly List<Transform> targets = new List<Transform>();
+        private Transform _mainTarget;
+        private EnemyController controller;
+
+        public event Action<Transform> OnTargetChanged;
 
         private void OnEnable() {
             _senses = GetComponents<Sense>();
@@ -28,15 +31,21 @@ namespace Enemies
             }
         }
 
-        protected abstract Vector2 ChooseTarget();
+        protected abstract Transform ChooseTarget();
 
         private void Start() {
             controller = GetComponent<EnemyController>();
         }
 
-        protected virtual void Update() {
-            Vector2 dir = ChooseTarget() - (Vector2)transform.position;
+        private void Update() {
+            Transform newTarget = ChooseTarget();
+            if (newTarget != _mainTarget) {
+                OnTargetChanged?.Invoke(newTarget);
+                _mainTarget = newTarget;
+            }
+            
             targets.Clear();
+            Vector2 dir = (_mainTarget.position - transform.position);
             dir.Normalize();
             controller?.Move(dir);
         }

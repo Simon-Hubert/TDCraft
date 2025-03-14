@@ -5,23 +5,30 @@ namespace Enemies
 {
     public abstract class Attack : MonoBehaviour
     {
-        public event Action<Transform> OnTargetEnterRange;
-        public event Action<Transform> OnTargetExitRange;
+        protected Transform target;
+        private AI _ai;
+        public event Action OnAttack; 
 
-        private void OnTriggerEnter2D(Collider2D other) {
-            if (other.CompareTag("Player")) {
-                Debug.Log("Collision enter");
-                OnTargetEnterRange?.Invoke(other.transform);
-            } 
-        }
-        
-        private void OnTriggerExit2D(Collider2D other) {
-            if (other.CompareTag("Player")) {
-                OnTargetExitRange?.Invoke(other.transform);
-                Debug.Log("Collision exit");
+        private void OnEnable() {
+            _ai = GetComponent<AI>();
+            if (_ai) {
+                _ai.OnTargetChanged += SetTarget;
             }
         }
 
-        public abstract void AttackTarget();
+        private void OnDisable() {
+            if (_ai) {
+                _ai.OnTargetChanged -= SetTarget;
+            }
+        }
+
+        private void SetTarget(Transform newTarget) {
+            target = newTarget;
+        }
+
+        protected void OnAttackInvoker() {
+            OnAttack?.Invoke();
+        }
+        
     }
 }

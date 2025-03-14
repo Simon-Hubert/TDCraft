@@ -5,10 +5,10 @@ namespace Enemies
 {
     public abstract class Sense : MonoBehaviour
     {
-        public event Action<Vector2> OnSenseTarget;
+        public event Action<Transform> OnSenseTarget;
 
-        protected void SensedAt(Vector2 position) {
-            OnSenseTarget?.Invoke(position);
+        protected void SensedAt(Transform target) {
+            OnSenseTarget?.Invoke(target);
         }
     }
 }

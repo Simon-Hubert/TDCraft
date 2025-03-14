@@ -9,7 +9,7 @@ namespace Enemies
 
         private void FixedUpdate() {
             foreach (GameObject target in _targets) {
-                SensedAt(target.transform.position);
+                SensedAt(target.transform);
             }
         }
     }
