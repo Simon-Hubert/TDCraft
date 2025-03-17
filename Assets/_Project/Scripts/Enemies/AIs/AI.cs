@@ -9,7 +9,7 @@ namespace Enemies
     {
         private Sense[] _senses;
         protected readonly List<Transform> targets = new List<Transform>();
-        private Transform _mainTarget;
+        protected Transform _mainTarget;
         private EnemyController controller;
 
         public event Action<Transform> OnTargetChanged;
@@ -33,11 +33,15 @@ namespace Enemies
 
         protected abstract Transform ChooseTarget();
 
-        private void Start() {
+        protected abstract Vector2 ChooseDestination();
+
+        protected virtual void Start() {
             controller = GetComponent<EnemyController>();
         }
 
-        private void Update() {
+        private void FixedUpdate() {
+            // TODO Refactor, y a un soucis avec ça car tout a besoin d'être sur les mêmes updates donc c'est chiant
+            // c'est les sense qui doivent changer i guess
             Transform newTarget = ChooseTarget();
             if (newTarget != _mainTarget) {
                 OnTargetChanged?.Invoke(newTarget);
@@ -45,7 +49,8 @@ namespace Enemies
             }
             
             targets.Clear();
-            Vector2 dir = (_mainTarget.position - transform.position);
+            Vector2 dir = ChooseDestination() - (Vector2)transform.position;
+            Debug.Log(dir);
             dir.Normalize();
             controller?.Move(dir);
         }

@@ -22,6 +22,8 @@ namespace Enemies
             }
         }
 
+        public abstract bool IsTargetInRange();
+
         private void SetTarget(Transform newTarget) {
             target = newTarget;
         }

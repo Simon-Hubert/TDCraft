@@ -13,8 +13,8 @@ namespace Enemies
         [SerializeField] private Projectile _projectile;
         private bool _canShoot = true;
 
-        private void Update() {
-            if (((Vector2)(target.position - transform.position)).magnitude <= _range) {
+        private void FixedUpdate() {
+            if (IsTargetInRange()) {
                 if (_canShoot) Shoot();
             }
         }
@@ -24,6 +24,10 @@ namespace Enemies
             proj.Init(target, _damages, false);
             OnAttackInvoker();
             StartCoroutine(Reload());
+        }
+
+        public override bool IsTargetInRange() {
+            return ((Vector2)(target.position - transform.position)).magnitude <= _range;
         }
 
         IEnumerator Reload() {

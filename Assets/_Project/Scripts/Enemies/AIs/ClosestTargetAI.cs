@@ -1,9 +1,17 @@
+using PlasticPipe.PlasticProtocol.Client;
 using UnityEngine;
 
 namespace Enemies
 {
     public class ClosestTargetAI : AI
     {
+        private Attack _attack; //TODO currently supports only one attack
+        
+        protected override void Start() {
+            base.Start();
+            _attack = GetComponent<Attack>();
+        }
+
         protected override Transform ChooseTarget() {
             Transform closest = transform;
             if (targets.Count <= 0) return closest;
@@ -16,6 +24,9 @@ namespace Enemies
                 closest = t;
             }
             return closest;
+        }
+        protected override Vector2 ChooseDestination() {
+            return _attack.IsTargetInRange() ? transform.position : _mainTarget.position;
         }
     }
 }
