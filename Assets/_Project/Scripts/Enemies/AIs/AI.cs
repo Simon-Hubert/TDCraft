@@ -50,7 +50,6 @@ namespace Enemies
             
             targets.Clear();
             Vector2 dir = ChooseDestination() - (Vector2)transform.position;
-            Debug.Log(dir);
             dir.Normalize();
             controller?.Move(dir);
         }

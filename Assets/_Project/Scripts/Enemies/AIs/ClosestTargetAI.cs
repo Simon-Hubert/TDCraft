@@ -5,7 +5,7 @@ namespace Enemies
 {
     public class ClosestTargetAI : AI
     {
-        private Attack _attack; //TODO currently supports only one attack
+        private Attack _attack; //TODO currently supports only one attack, could be more
         
         protected override void Start() {
             base.Start();
