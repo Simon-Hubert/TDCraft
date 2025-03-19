@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9d07944b5083e4a9184c3aa521156c, type: 3}
+  m_Name: Tree
+  m_EditorClassIdentifier: 
+  _farmableID: Tree
+  _farmableRarity: R
+  Sprites: []
+  _lifeMAX: 10
+  DroppedResources:
+  - {fileID: 11400000, guid: 36d2d7db33c195f4c88747eb5c6f7d57, type: 2}
