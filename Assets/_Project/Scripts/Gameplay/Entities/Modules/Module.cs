@@ -3,31 +3,21 @@ using UnityEngine;
 
 namespace Entities
 {
-    public class Module : MonoBehaviour
+    public abstract class Module : MonoBehaviour, IInteractable
     {
-        protected Turtle Turtle;
-        protected Life Life;
-        protected Character CharacterOwner;
-        protected CharacterPilotingState CharacterPilotingState;
+        public event Action OnPlaced;
+        public event Action OnRemoved;
+        
+        public InteractableID GetInteractableID() => InteractableID.Module;
 
-        public virtual void Init(Turtle turtle)
-        {
-            Turtle = turtle;
+        public abstract bool Interact(Character character);
+
+        public virtual void Place() {
+            OnPlaced?.Invoke();
         }
-        public virtual void ManageInteract() {}
-        public virtual void ManageMove(Vector2 direction) {}
-        public virtual void ManageShoot() {}
-        public virtual void BindInput() {}
-        public virtual void UnBindInput() {}
 
-        public void Interact(Character character = null)
-        {
-            CharacterOwner = character;
-            character.transform.position = transform.position;
-            CharacterPilotingState = character.GetComponent<CharacterPilotingState>();
-            BindInput();
+        protected virtual void Remove() {
+            OnRemoved?.Invoke();
         }
     }
 }
-
-
