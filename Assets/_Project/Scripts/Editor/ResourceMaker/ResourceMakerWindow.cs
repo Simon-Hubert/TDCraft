@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using System.IO;
-using Controls;
+using Entities;
+using Gameplay;
 
 public class ResourceMakerWindow : EditorWindow
 {
