@@ -2,23 +2,22 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Gameplay.Controls
+namespace Inputs
 {
     public class PlayerController : MonoBehaviour
     {
-        public event Action<Vector2> OnMove;
-        public event Action OnInteract;
-        
-        public void Move(InputAction.CallbackContext context)
-        {
-            OnMove?.Invoke(context.ReadValue<Vector2>());
+        private IControllable controlled;
+
+        public void Move(InputAction.CallbackContext context) {
+            controlled.ReceiveMove(context.ReadValue<Vector2>());
         }
 
-        public void Interact(InputAction.CallbackContext context)
-        {
-            //Call sur le premier Interactable de la list
-            OnInteract?.Invoke();
+        public void Interact(InputAction.CallbackContext context) {
+            controlled.ReceiveInteract();
         }
-    } 
+
+        public void Bind(IControllable controllable) {
+            controlled = controllable;
+        }
+    }
 }
-

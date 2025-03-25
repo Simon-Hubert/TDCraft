@@ -5,27 +5,17 @@ namespace Entities
 {
     public class CharacterInteractState : CharacterState
     {
-        #region UnityEvent
-        public UnityEvent OnEnterInteract;
-        public UnityEvent OnExitInteract;
-        #endregion
-        
-        
         #region StateMachine Methods
         public override StateID GetStateID() => StateID.Interact;
         public override void StateEnter()
         {
             base.StateEnter();
-            OnEnterInteract?.Invoke();
-            BindInputs();
             Debug.Log("Entering Interact State");
         }
     
         public override void StateExit()
         {
             base.StateExit();
-            OnExitInteract?.Invoke();
-            UnBindInputs();
             Debug.Log("Exiting Interact State");
         }
     
@@ -41,21 +31,8 @@ namespace Entities
         #endregion
         
         #region Inputs Methods
-        public override void BindInputs()
-        {
-            base.BindInputs();
-            Character.PC.OnInteract += ReceiveInteract;
-            Character.PC.OnMove += ReceiveMove;
-        }
     
-        public override void UnBindInputs()
-        {
-            base.UnBindInputs();
-            Character.PC.OnInteract -= ReceiveInteract;
-            Character.PC.OnMove -= ReceiveMove;
-        }
-    
-        void ReceiveInteract()
+        public override void Interact()
         {
             if (Character.ICollider.Interactables.Count > 0)
             {
@@ -68,7 +45,7 @@ namespace Entities
             }
         }
     
-        void ReceiveMove(Vector2 moves)
+        public override void Move(Vector2 moves)
         {
             StateMachine.ChangeState(StateID.Run);
         }

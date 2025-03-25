@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Entities
 {
@@ -7,6 +8,9 @@ namespace Entities
         protected CharacterStateMachine StateMachine;
         protected Character Character;
 
+        public UnityEvent OnStateEnter;
+        public UnityEvent OnStateExit;
+
 
         public virtual void Initialize(Character character, CharacterStateMachine stateMachine)
         {
@@ -14,14 +18,17 @@ namespace Entities
             StateMachine = stateMachine;
         }
 
-        public virtual StateID GetStateID() => StateID.None; 
-        public virtual void StateEnter() {}
-        public virtual void StateExit() {}
+        public virtual StateID GetStateID() => StateID.None;
+        public virtual void StateEnter() {
+            OnStateEnter?.Invoke();
+        }
+        public virtual void StateExit() {
+            OnStateExit?.Invoke();
+        }
         public virtual void StateUpdate(float deltaTime) {}
         public virtual void StateFixedUpdate(float fixedDeltaTime) {}
-        public virtual void BindInputs() {}
-        public virtual void UnBindInputs() {}
-    
+        public virtual void Move(Vector2 inputs) {}
+        public virtual void Interact() {}
     }
 }
 

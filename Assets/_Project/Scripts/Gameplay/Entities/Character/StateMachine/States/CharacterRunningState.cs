@@ -9,11 +9,6 @@ namespace Entities
         [SerializeField] private float _speed;
         #endregion
         
-        #region Unity Events
-        public UnityEvent OnEnterRunning;
-        public UnityEvent OnExitRunning;
-        #endregion
-        
         #region Variables
         bool isRunning = false;
         private Vector2 dir;
@@ -25,16 +20,12 @@ namespace Entities
         public override void StateEnter()
         {
             base.StateEnter();
-            OnEnterRunning?.Invoke();
-            BindInputs();
             Debug.Log("Entering Run State");
         }
     
         public override void StateExit()
         {
             base.StateExit();
-            OnExitRunning?.Invoke();
-            UnBindInputs();
             Debug.Log("Exiting Run State");
         }
     
@@ -57,19 +48,7 @@ namespace Entities
         #endregion
     
         #region Inputs Methods
-        public override void BindInputs()
-        {
-            base.BindInputs();
-            Character.PC.OnMove += ReceiveMove;
-        }
-    
-        public override void UnBindInputs()
-        {
-            base.UnBindInputs();
-            Character.PC.OnMove -= ReceiveMove;
-        }
-    
-        void ReceiveMove(Vector2 direction)
+        public override void Move(Vector2 direction)
         {
             if ((direction.x >= 0.1f || direction.y >= 0.1f) || (direction.x <= -0.1f || direction.y <= -0.1f))
             {

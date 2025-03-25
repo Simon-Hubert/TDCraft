@@ -1,18 +1,16 @@
 using System.Collections.Generic;
 using Gameplay;
-using Gameplay.Controls;
+using Inputs;
 using UnityEngine;
 
 namespace Entities
 {
-    public class Character : MonoBehaviour
+    public class Character : MonoBehaviour, IControllable
     {
         #region Comps
         [Header("Components")]
         public PlayerController PC;
-
         public InteractionsCollider ICollider;
-        //public Life Life;
         #endregion
     
         #region StateMachine
@@ -28,6 +26,7 @@ namespace Entities
         
         private void Awake()
         {
+            PC.Bind(this);
             _stateMachine = new CharacterStateMachine();
             foreach (CharacterState state in GetComponents<CharacterState>())
             {
@@ -51,6 +50,13 @@ namespace Entities
         {
             _stateMachine.CurrentState.StateFixedUpdate(Time.fixedDeltaTime);
         }
-    
+
+
+        public void ReceiveMove(Vector2 inputs) {
+            _stateMachine.CurrentState.Move(inputs);
+        }
+        public void ReceiveInteract() {
+            _stateMachine.CurrentState.Interact();
+        }
     }
 }
